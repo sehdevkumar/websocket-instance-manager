@@ -1,17 +1,18 @@
 import { DefaultEventsMap } from '@socket.io/component-emitter';
 import { Subject } from 'rxjs';
 import { Socket } from 'socket.io-client';
-import { WsEventHandlerBaseClass } from '../../typings/websocket-typings';
+import { IWSEventDataItem, WsEventHandlerBaseClass } from '../../typings/websocket-typings';
+import { AppWebSocketNSPEnum, WSEventEnums } from '../../typings/websocket-enums';
 
-export abstract class WsHandlerBaseClass implements WsEventHandlerBaseClass<any> {
-  abstract dataList: any[];
+export abstract class WsHandlerBaseClass implements WsEventHandlerBaseClass<IWSEventDataItem> {
+  abstract dataList: IWSEventDataItem[];
   abstract socket: Socket;
-  abstract emitter: Subject<any>;
+  abstract emitter: Subject<IWSEventDataItem>;
   abstract data: any;
-  abstract nameSpaceName: string;
-  abstract eventName: string;
+  abstract nameSpaceName: AppWebSocketNSPEnum;
+  abstract eventName: WSEventEnums;
   abstract UUID: string;
-  abstract pushAndNotify(...args: any[]): void;
+  abstract pushAndNotify(...args: IWSEventDataItem[]): void;
   abstract generateConnection(...args: any[]): void;
 
 }

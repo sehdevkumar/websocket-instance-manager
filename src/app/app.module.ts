@@ -3,6 +3,8 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { SingletonService } from './services/singleton.service';
+import { SocketIoService } from './services/socket-io.service';
 
 @NgModule({
   declarations: [
@@ -12,7 +14,7 @@ import { AppComponent } from './app.component';
     BrowserModule,
     AppRoutingModule
   ],
-  providers: [],
+  providers: [SingletonService, SocketIoService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
