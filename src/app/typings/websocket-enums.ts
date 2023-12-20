@@ -7,8 +7,7 @@ export enum WSEventEnums {
   CONNECT_ERROR = 'connect_error',
 
   // Customs Application Events
-   TALLY_SHEET_STATUS_UPDATE = 'tallysheet_status_update',
-  RAY_RESPONSE = 'ray_response',
+  APP_EVENT = 'app_event',
 }
 
 
@@ -17,5 +16,5 @@ export enum WSEventEnums {
  * NameSpace For application
  */
 export enum AppWebSocketNSPEnum {
-   WS_NSP__WAREHOUSE_SURVEY = '/warehouse-survey',
+   WS_NSP__APP = '/app-namespace',
 }

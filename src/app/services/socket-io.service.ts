@@ -16,19 +16,18 @@ import { WSHandlerClass } from '../handler-classes/instance-manager-classes/ws-h
 // socketService.initWebsocketConnections();
 
 interface SocketIOConnection {
-   nameSpace: AppWebSocketNSPEnum;
-   socket: SocketIo.Socket;
-  }
+  nameSpace: AppWebSocketNSPEnum;
+  socket: SocketIo.Socket;
+}
 
 @Injectable({
   providedIn: 'root',
 })
 export class SocketIoService {
-
-  socketConnection: Array<SocketIOConnection>  = [];
+  socketConnection: Array<SocketIOConnection> = [];
 
   // The base URL for the Socket.IO connections.
-  baseUrl = 'http://172.16.120.68:8002';
+  baseUrl = 'wss://www.example.com/socketserver';
 
   // Returns the list of application items.
   get getAppListItmes() {
@@ -40,7 +39,6 @@ export class SocketIoService {
   // Initializes Socket.IO connections for each application item.
   public initWebsocketConnections(): void {
     this.getAppListItmes?.forEach((item) => {
-
       const currentNs = item?.webSocketConnectionList?.nameSpace;
       const currentEvents = item?.webSocketConnectionList?.events;
 
@@ -64,7 +62,7 @@ export class SocketIoService {
 
         // Emits a 'join' event with the username and password to authenticate on the server.
         socket.emit('join', { username, password }, (response) => {
-          // console.log('Join response:', response);
+          console.log('Join response:', response);
 
           // if Invalid User or UnAuthrized then Disconnect All Websocket Connections
           if (response === 401) {
@@ -73,32 +71,41 @@ export class SocketIoService {
           }
         });
 
-        this.socketConnection.push({nameSpace: currentNs, socket});
+        this.socketConnection.push({ nameSpace: currentNs, socket });
       });
 
       // Event handler for the 'connect_error' event.
       // It is triggered when there is an error in the WebSocket connection.
       socket.on(WSEventEnums.CONNECT_ERROR, () => {
+        this.ss.webSocketConnectionMessage.next(
+          'Web socket Connection has error',
+        );
         console.log('Web socket Connection has error');
       });
 
       // Event handler for the 'connect_failed' event.
       // It is triggered when the WebSocket connection fails.
       socket.on(WSEventEnums.CONNECT_FAILED, () => {
+        this.ss.webSocketConnectionMessage.next('Web socket Connection failed');
+
         console.log('Web socket Connection failed');
       });
 
       // Event handler for the 'disconnect' event.
       // It is triggered when the WebSocket connection is disconnected.
       socket.on(WSEventEnums.DISCONNECT, () => {
+        this.ss.webSocketConnectionMessage.next(
+          'Web socket Connection disconnected',
+        );
+
         console.log('Web socket Connection disconnected');
       });
     });
   }
 
   onDisconnect() {
-     this.socketConnection?.forEach(wsConnection => {
-       wsConnection.socket?.disconnect();
-     });
+    this.socketConnection?.forEach((wsConnection) => {
+      wsConnection.socket?.disconnect();
+    });
   }
 }

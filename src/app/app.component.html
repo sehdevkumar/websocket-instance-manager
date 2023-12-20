@@ -1,0 +1,23 @@
+<div class="app-main">
+   <h2>Web Socket Manager App</h2>
+
+   <div>
+      Trying to connect with <span style="font-weight: bolder;color: lawngreen;">{{socketService?.baseUrl}}</span>
+   </div>
+
+  <span style="color: red;font-size: 40px;" *ngIf="ss?.webSocketConnectionMessage | async;let data;else noData">
+    <span style="color:green" *ngIf="data==='Connected'">
+      {{data}}
+    </span>
+    <span *ngIf="data!=='Connected'">
+       {{data}}
+    </span>
+  </span>
+
+
+</div>
+
+<ng-template #noData>
+   <div style="color: darkorange;font-size:40px">Connection is in Progress...</div>
+</ng-template>
+

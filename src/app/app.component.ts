@@ -13,8 +13,8 @@ import { SingletonService } from './services/singleton.service';
 })
 export class AppComponent implements OnInit {
   constructor(
-    private socketService: SocketIoService,
-    private ss: SingletonService,
+    public socketService: SocketIoService,
+    public ss: SingletonService,
   ) {}
 
   ngOnInit(): void {
@@ -22,8 +22,8 @@ export class AppComponent implements OnInit {
 
     this.ss.webSocketConnectionManagerClass
       .getWsHandlerByEventAndNameSpace(
-        WSEventEnums.TALLY_SHEET_STATUS_UPDATE,
-        AppWebSocketNSPEnum.WS_NSP__WAREHOUSE_SURVEY,
+        WSEventEnums.APP_EVENT,
+        AppWebSocketNSPEnum.WS_NSP__APP,
       )
       ?.getEmitter.subscribe((res) => {
         console.log('Data Recevied', res);
